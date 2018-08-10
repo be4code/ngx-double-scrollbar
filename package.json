@@ -8,9 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:library": "ng build --prod ngx-double-scrollbar",
-    "test:library": "ng test ngx-double-scrollbar",
-    "pack:library": "cd dist/example-ng6-lib && npm pack"
+    "build:library": "ng build --prod @be4code/ngx-double-scrollbar",
+    "test:library": "ng test ngx-double-scrollbar"
   },
   "private": true,
   "dependencies": {
