@@ -1,6 +1,6 @@
 <div>
-  <div style="overflow-y:hidden;" [ngStyle]="{height:'20px'}" class="second-scrollbar" #secondScrollbar>
-    <div [ngStyle]="{height:'20px', width: content.scrollWidth + 'px'}"></div>
+  <div class="second-scrollbar" #secondScrollbar>
+    <div class="second-scrollbar-content" [ngStyle]="{width: content.scrollWidth + 'px'}"></div>
   </div>
   <div class="wrapper" id="content" #content>
     <ng-content></ng-content>

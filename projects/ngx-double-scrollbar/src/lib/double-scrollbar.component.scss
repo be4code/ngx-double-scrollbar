@@ -1,4 +1,15 @@
+$scrollbar-height: 20px;
+
 .wrapper {
   overflow-x: scroll;
   overflow-y: hidden;
+}
+
+.second-scrollbar {
+  height: $scrollbar-height;
+  overflow-y: hidden;
+}
+
+.second-scrollbar-content {
+  height: $scrollbar-height;
 }
