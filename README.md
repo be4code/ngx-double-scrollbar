@@ -1,27 +1,41 @@
-# NgxDoubleScrollbarApp
+[![npm version](https://badge.fury.io/js/%40be4code%2Fngx-double-scrollbar.svg)](https://badge.fury.io/js/%40be4code%2Fngx-double-scrollbar)
+[![npm downloads](https://img.shields.io/npm/dm/@be4code/ngx-double-scrollbar.svg)](https://npmjs.org/@be4code/ngx-double-scrollbar)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+# NgxDoubleScrollbar
 
-## Development server
+`ngx-double-scrollbar` is Angular component that generates second scrollbar when the content is long enough to create a horizontal scrollbar. 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+To use `ngx-double-scrollbar` in your project install it via [npm](https://www.npmjs.com/package/@be4code/ngx-double-scrollbar):
+```
+npm install --save @be4code/ngx-double-scrollbar
+```
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Usage
+Import `DoubleScrollbarModule` and add it to module imports.
+```
+import { DoubleScrollbarModule } from '@be4code/ngx-double-scrollbar';
 
-## Running unit tests
+@NgModule({
+    imports: [
+        DoubleScrollbarModule
+    ]
+})
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Wrap a long element with `<ngx-double-scrollbar></ngx-double-scrollbar>`
+```
+<ngx-double-scrollbar>
+    <div class="long-content">
+      ...
+    </div>
+</ngx-double-scrollbar>    
+```
+When `ngx-double-scrollbar` content is longer than its container, two scrollbar will be shown: one above and one below the content.
 
-## Running end-to-end tests
+## License
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
