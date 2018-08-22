@@ -1,9 +1,8 @@
 <div>
   <div class="second-scrollbar" #secondScrollbar>
-    <div class="second-scrollbar-content" [ngStyle]="{width: content.scrollWidth + 'px'}"></div>
+    <div class="second-scrollbar-content" [style.width.px]="scrollWidth"></div>
   </div>
-  <div class="wrapper" id="content" #content>
+  <div class="wrapper" #content>
     <ng-content></ng-content>
   </div>
 </div>
-
