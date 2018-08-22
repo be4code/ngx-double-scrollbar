@@ -1,7 +1,17 @@
 {
   "name": "@be4code/ngx-double-scrollbar",
-  "keywords": ["scrollbar", "@angular", "ngx", "double scrollbar"],
-  "version": "0.0.3",
+  "keywords": [
+    "scrollbar",
+    "@angular",
+    "ngx",
+    "double scrollbar"
+  ],
+  "version": "0.0.4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/be4code/ngx-double-scrollbar.git"
+  },
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
