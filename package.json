@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build:library": "ng build --prod @be4code/ngx-double-scrollbar",
-    "test:library": "ng test ngx-double-scrollbar"
+    "test:library": "ng test @be4code/ngx-double-scrollbar"
   },
   "private": true,
   "dependencies": {
