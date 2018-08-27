@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, ViewChild } from '@angular/core';
-import { fromEvent, interval } from 'rxjs';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
+import { fromEvent, interval, merge, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 
-const SCROLL_DEBOUNCE_TIME = 300;
 const WIDTH_WATCH_INTERVAL = 30;
 const WIDTH_CHANGE_DEBOUNCE_TIME = 10;
 
@@ -11,7 +10,7 @@ const WIDTH_CHANGE_DEBOUNCE_TIME = 10;
   templateUrl: './double-scrollbar.component.html',
   styleUrls: ['./double-scrollbar.component.scss']
 })
-export class DoubleScrollbarComponent implements AfterViewInit {
+export class DoubleScrollbarComponent implements AfterViewInit, OnDestroy {
 
   public scrollWidth: number;
 
@@ -21,11 +20,15 @@ export class DoubleScrollbarComponent implements AfterViewInit {
   @ViewChild('content')
   private content: ElementRef;
 
-  private contentScrollbarActive = false;
-
-  private secondScrollbarActive = false;
-
   private widthChanges = new EventEmitter<number>();
+
+  private scrollChange: Subscription;
+
+  private widthInterval: Subscription;
+
+  private lastUsedElement: Element;
+
+  private lastUsedTime: number = DoubleScrollbarComponent.now();
 
   constructor() {
     this.widthChanges
@@ -36,40 +39,45 @@ export class DoubleScrollbarComponent implements AfterViewInit {
       .subscribe(value => this.scrollWidth = value);
   }
 
+  private static now(): number {
+    return new Date().getTime();
+  }
+
   ngAfterViewInit(): void {
-    fromEvent(this.content.nativeElement, 'scroll')
+    this.scrollChange = merge(
+      fromEvent(this.content.nativeElement, 'scroll'),
+      fromEvent(this.secondScrollbar.nativeElement, 'scroll')
+    )
       .pipe(
-        filter(() => !this.secondScrollbarActive),
-        tap(() => this.contentScrollbarActive = true)
+        map((event: Event) => event.srcElement),
+        filter(srcElement => {
+          const enoughDiff = DoubleScrollbarComponent.now() - this.lastUsedTime < 30;
+          const sameElement = enoughDiff && this.lastUsedElement == srcElement;
+          return this.lastUsedElement === undefined || sameElement || !enoughDiff;
+        }),
+        tap(srcElement => {
+          this.lastUsedTime = DoubleScrollbarComponent.now();
+          this.lastUsedElement = srcElement;
+        })
       )
-      .subscribe((event: Event) => this.secondScrollbar.nativeElement.scrollLeft = event.srcElement.scrollLeft);
+      .subscribe(srcElement => {
+        const targetElement = this.getTargetElement(srcElement).nativeElement;
+        targetElement.scrollLeft = srcElement.scrollLeft;
+      });
 
-    fromEvent(this.content.nativeElement, 'scroll')
-      .pipe(
-        distinctUntilChanged(),
-        debounceTime(SCROLL_DEBOUNCE_TIME)
-      )
-      .subscribe(() => this.contentScrollbarActive = false);
-
-    fromEvent(this.secondScrollbar.nativeElement, 'scroll')
-      .pipe(
-        filter(() => !this.contentScrollbarActive),
-        tap(() => this.secondScrollbarActive = true)
-      )
-      .subscribe((event: Event) => this.content.nativeElement.scrollLeft = event.srcElement.scrollLeft);
-
-    fromEvent(this.secondScrollbar.nativeElement, 'scroll')
-      .pipe(
-        distinctUntilChanged(),
-        debounceTime(SCROLL_DEBOUNCE_TIME)
-      )
-      .subscribe(() => this.secondScrollbarActive = false);
-
-    interval(WIDTH_WATCH_INTERVAL)
+    this.widthInterval = interval(WIDTH_WATCH_INTERVAL)
       .pipe(
         map(() => this.content.nativeElement.scrollWidth)
       )
       .subscribe(value => this.widthChanges.emit(value));
   }
 
+  ngOnDestroy(): void {
+    this.scrollChange.unsubscribe();
+    this.widthInterval.unsubscribe();
+  }
+
+  private getTargetElement(srcElement: Element): ElementRef {
+    return srcElement == this.content.nativeElement ? this.secondScrollbar : this.content;
+  }
 }

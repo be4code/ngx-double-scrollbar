@@ -1,7 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DoubleScrollbarComponent } from './double-scrollbar.component';
+import { async, ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { DoubleScrollbarComponent } from './double-scrollbar.component';
 
 
 @Component({
@@ -21,7 +21,10 @@ describe('DoubleScrollbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, DoubleScrollbarComponent]
+      declarations: [TestComponent, DoubleScrollbarComponent],
+      providers: [
+        {provide: ComponentFixtureAutoDetect, useValue: true}
+      ]
     });
   }));
 
@@ -35,33 +38,42 @@ describe('DoubleScrollbarComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('should scroll secondScrollbar after scrolling wrapper', () => {
+  it('should scroll secondScrollbar after scrolling content', (done) => {
     // given
     const element: DebugElement = fixture.debugElement;
-    const wrapper: DebugElement = element.query(By.css('.wrapper'));
+    const content: DebugElement = element.query(By.css('.content'));
     const secondScrollbar: DebugElement = element.query(By.css('.second-scrollbar'));
     const scrollBy = 50;
-
     // when
-    wrapper.nativeElement.scrollLeft = scrollBy;
-    wrapper.nativeElement.dispatchEvent(new Event('scroll'));
+    setTimeout(() => {
+      content.nativeElement.scrollLeft = scrollBy;
+      content.triggerEventHandler('scroll', new Event('scroll'));
 
-    // then
-    expect(secondScrollbar.nativeElement.scrollLeft).toEqual(scrollBy);
+      // then
+      setTimeout(() => {
+        expect(secondScrollbar.nativeElement.scrollLeft).toEqual(scrollBy);
+        done();
+      });
+    }, 60);
   });
 
-  it('should scroll wrapper after scrolling secondScrollbar', () => {
+  it('should scroll content after scrolling secondScrollbar', (done) => {
     // given
     const element: DebugElement = fixture.debugElement;
-    const wrapper: DebugElement = element.query(By.css('.wrapper'));
+    const content: DebugElement = element.query(By.css('.content'));
     const secondScrollbar: DebugElement = element.query(By.css('.second-scrollbar'));
-    const scrollBy = 50;
+    const scrollBy = 150;
 
     // when
-    secondScrollbar.nativeElement.scrollLeft = scrollBy;
-    secondScrollbar.nativeElement.dispatchEvent(new Event('scroll'));
+    setTimeout(() => {
+      secondScrollbar.nativeElement.scrollLeft = scrollBy;
+      secondScrollbar.nativeElement.dispatchEvent(new Event('scroll'));
 
-    // then
-    expect(wrapper.nativeElement.scrollLeft).toEqual(scrollBy);
+      // then
+      setTimeout(() => {
+        expect(content.nativeElement.scrollLeft).toEqual(scrollBy);
+        done();
+      });
+    }, 60);
   });
 });
