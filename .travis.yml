@@ -1,0 +1,9 @@
+language: node_js
+sudo: required
+addons:
+  chrome: stable
+node_js:
+- "9.11.1"
+script:
+- npm run test
+- npm run test:library
