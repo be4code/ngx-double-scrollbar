@@ -32,6 +32,6 @@ module.exports = function (config) {
       }
     },
     browsers: ['ChromeHeadlessNoSandbox'],
-    singleRun: false
+    singleRun: true
   });
 };
