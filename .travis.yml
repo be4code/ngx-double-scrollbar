@@ -5,5 +5,7 @@ addons:
 node_js:
 - "9.11.1"
 script:
-- npm run test
+- npm run build:library
+- npm run build
 - npm run test:library
+- npm run test
