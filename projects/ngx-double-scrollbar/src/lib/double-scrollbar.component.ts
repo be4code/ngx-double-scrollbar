@@ -73,8 +73,13 @@ export class DoubleScrollbarComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.scrollChange.unsubscribe();
-    this.widthInterval.unsubscribe();
+    if (this.scrollChange) {
+      this.scrollChange.unsubscribe();
+    }
+
+    if (this.widthInterval) {
+      this.widthInterval.unsubscribe();
+    }
   }
 
   private getTargetElement(srcElement: Element): ElementRef {
