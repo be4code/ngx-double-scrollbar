@@ -1,5 +1,6 @@
 [![npm version](https://badge.fury.io/js/%40be4code%2Fngx-double-scrollbar.svg)](https://badge.fury.io/js/%40be4code%2Fngx-double-scrollbar)
 [![npm downloads](https://img.shields.io/npm/dm/@be4code/ngx-double-scrollbar.svg)](https://npmjs.org/@be4code/ngx-double-scrollbar)
+[![Build Status](https://travis-ci.org/be4code/ngx-double-scrollbar.svg?branch=master)](https://travis-ci.org/be4code/ngx-double-scrollbar)
 
 # NgxDoubleScrollbar
 
